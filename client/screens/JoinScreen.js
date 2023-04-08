@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useTailwind } from "tailwind-rn";
 import styles from "../style";
 
 const JoinScreen = () => {
-  const tw = useTailwind();
   const [code, setCode] = useState("");
 
   const handleCodeChange = (text) => {

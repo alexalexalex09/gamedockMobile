@@ -1,10 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import tw from "tailwind-rn";
+import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./StackNavigator";
+import deviceId from "./deviceId";
 
 export default function App() {
+  useEffect(() => {
+    deviceId();
+  }, []);
   return (
     <NavigationContainer>
       <StackNavigator />
