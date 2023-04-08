@@ -1,28 +1,43 @@
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Text, TouchableOpacity, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styles from "../style";
-import { db } from "../firebase";
+import styles from "../utils/style";
+import { db } from "../utils/firebase";
 import { doc, setDoc, serverTimestamp } from "@firebase/firestore";
-import { getDeviceId } from "../deviceId";
+import { getDeviceId } from "../utils/useSecureStore";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+
   const navigateToJoinScreen = () => {
     navigation.navigate("Join");
   };
+
   const navigateToGameScreen = async () => {
     const uniqueId = await getDeviceId();
-    console.log({ uniqueId });
-    setDoc(doc(db, "games", generateRandomString(5)), {
+    const code = generateRandomString(5);
+    setDoc(doc(db, "games", code), {
       timeStamp: serverTimestamp(),
       users: [uniqueId],
       owner: uniqueId,
     });
-    navigation.navigate("Game");
+    navigation.navigate("Game", { code: code });
   };
+
+  const [username, setUsername] = useState("");
+
+  const handleUsernameChange = (text) => {
+    setCode(text.toUpperCase().replace(/I/g, "L"));
+  };
+
   return (
     <View style={styles.container}>
+      <TextInput
+        value={username}
+        onChangeText={handleUsernameChange}
+        placeholder="Enter Your Username"
+        autoFocus={true}
+      />
       <TouchableOpacity style={styles.button} onPress={navigateToJoinScreen}>
         <Text style={styles.buttonText}>Input Code</Text>
       </TouchableOpacity>

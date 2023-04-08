@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import styles from "../style";
+import styles from "../utils/style";
 
 const JoinScreen = () => {
   const [code, setCode] = useState("");
