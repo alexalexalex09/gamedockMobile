@@ -18,19 +18,17 @@ export async function getDeviceId() {
   return fetchUUID;
 }
 
-export async function setUsername() {
-  let uuid = uuidv4();
-  console.log({ uuid });
+export async function setLocalUsername(username) {
   //if user has already signed up prior
   /*
   let fetchUsername = await SecureStore.getItemAsync("gamedockUsername");
   if (fetchUsername) {
     uuid = fetchUsername;
   }*/
-  await SecureStore.setItemAsync("gamedockUsername", uuid);
+  await SecureStore.setItemAsync("gamedockUsername", username);
 }
 
-export async function getUsername() {
+export async function getLocalUsername() {
   let fetchUsername = await SecureStore.getItemAsync("gamedockUsername");
   return fetchUsername;
 }

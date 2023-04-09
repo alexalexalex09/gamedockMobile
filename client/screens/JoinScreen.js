@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import styles from "../utils/style";
+import { db } from "../utils/firebase";
+import { doc, updateDoc, arrayUnion } from "@firebase/firestore";
+import { getDeviceId } from "../utils/useSecureStore";
 
-const JoinScreen = () => {
+const JoinScreen = ({ route }) => {
+  const navigation = useNavigation();
+  const { username } = route.params;
   const [code, setCode] = useState("");
 
   const handleCodeChange = (text) => {
@@ -10,7 +16,16 @@ const JoinScreen = () => {
   };
 
   const handleSubmit = () => {
-    // Handle submission logic here
+    async function findGame(code) {
+      const uniqueId = await getDeviceId();
+      console.log({ uniqueId });
+      updateDoc(doc(db, "games", code), {
+        users: { ...{ [`${uniqueId}`]: username } },
+      });
+      console.log("ready to navigate");
+      navigation.navigate("Game", { code: code, username: username });
+    }
+    findGame(code);
   };
 
   return (

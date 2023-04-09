@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  inputText: {
+    fontSize: 24,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    padding: 10,
+    textAlign: "center",
+  },
 });
 
 export default styles;

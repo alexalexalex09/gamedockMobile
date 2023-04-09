@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, getDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,5 +22,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 const db = getFirestore(app);
+
+const checkUser = async function (code, username, id) {
+  const querySnapshot = getDoc(doc(db, "games", code));
+
+  // Check if the username and/or ID already exist in the users array
+  let updated = false;
+  // Reject if the username matches but the ID does not match
+  if (
+    querySnapshot.users.some((userObj) => userObj === username) &&
+    querySnapshot.id != username
+  ) {
+    setMessage("This username is already taken. Please choose another one.");
+    updated = true;
+  } else {
+    updateDoc(doc(db, "games", code), {
+      users: { ...{ [`${id}`]: username } },
+    });
+  }
+};
 
 export { app, db };
