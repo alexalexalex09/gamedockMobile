@@ -29,6 +29,8 @@ const HomeScreen = () => {
       console.log("Please enter your name!");
       return;
     }
+    console.log(username);
+    setLocalUsername(username);
     navigation.navigate("Join", { username: username });
   };
 
@@ -41,8 +43,9 @@ const HomeScreen = () => {
     const code = generateRandomString(5);
     setDoc(doc(db, "games", code), {
       timeStamp: serverTimestamp(),
-      users: { [`${uniqueId}`]: username },
+      users: { [`${uniqueId}`]: { username: username } },
       owner: { id: uniqueId, username: username },
+      startGame: false,
     });
     console.log(username);
     setLocalUsername(username);

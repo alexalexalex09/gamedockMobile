@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 export async function setDeviceId() {
   let uuid = uuidv4();
   console.log({ uuid });
-  /*let fetchUUID = await SecureStore.getItemAsync("secure_deviceid");
+  let fetchUUID = await SecureStore.getItemAsync("secure_deviceid");
   //if user has already signed up prior
   if (fetchUUID) {
     uuid = fetchUUID;
-  }*/
+  }
   await SecureStore.setItemAsync("secure_deviceid", uuid);
 }
 

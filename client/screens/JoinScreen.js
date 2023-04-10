@@ -20,7 +20,7 @@ const JoinScreen = ({ route }) => {
       const uniqueId = await getDeviceId();
       console.log({ uniqueId });
       updateDoc(doc(db, "games", code), {
-        users: { ...{ [`${uniqueId}`]: username } },
+        [`users.${uniqueId}`]: { username: username },
       });
       console.log("ready to navigate");
       navigation.navigate("Game", { code: code, username: username });

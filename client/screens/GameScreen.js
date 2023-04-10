@@ -1,8 +1,11 @@
 import React from "react";
-import { Text, View, FlatList } from "react-native";
+import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
+import styles from "../utils/style";
 import { db } from "../utils/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, updateDoc, getDoc, onSnapshot } from "firebase/firestore";
+import GameStartButton from "../components/GameStartButton";
+import PlayerButton from "../components/PlayerButton";
 
 const GameScreen = ({ route }) => {
   const { code } = route.params;
@@ -20,11 +23,15 @@ const GameScreen = ({ route }) => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {}, [users]);
+  const handleStartGame = async () => {
+    updateDoc(doc(db, "games", code), {
+      startGame: true,
+    });
+  };
 
   const Item = ({ title }) => (
     <View style={{ padding: 10 }}>
-      <Text>{title}</Text>
+      <Text>{title.username}</Text>
     </View>
   );
 
@@ -39,6 +46,8 @@ const GameScreen = ({ route }) => {
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
+      <GameStartButton code={code}></GameStartButton>
+      <PlayerButton code={code}></PlayerButton>
     </View>
   );
 };
