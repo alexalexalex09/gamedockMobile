@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../utils/style";
 import { db } from "../utils/firebase";
-import { doc, updateDoc, arrayUnion } from "@firebase/firestore";
+import { doc, updateDoc, getDoc } from "@firebase/firestore";
 import { getDeviceId } from "../utils/useSecureStore";
 
 const JoinScreen = ({ route }) => {
@@ -19,11 +19,16 @@ const JoinScreen = ({ route }) => {
     async function findGame(code) {
       const uniqueId = await getDeviceId();
       console.log({ uniqueId });
-      updateDoc(doc(db, "games", code), {
-        [`users.${uniqueId}`]: { username: username },
-      });
-      console.log("ready to navigate");
-      navigation.navigate("Game", { code: code, username: username });
+      const roomDoc = await getDoc(doc(db, "games", code));
+      if (roomDoc.data().users[`${uniqueId}`]?.playerNum) {
+        navigation.navigate("Room", { code: code });
+      } else {
+        updateDoc(doc(db, "games", code), {
+          [`users.${uniqueId}`]: { username: username },
+        });
+        console.log("ready to navigate");
+        navigation.navigate("Game", { code: code, username: username });
+      }
     }
     findGame(code);
   };

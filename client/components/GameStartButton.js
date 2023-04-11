@@ -8,7 +8,6 @@ const GameStartButton = ({ code }) => {
   if (code == null) {
     return <Text>Error: No code parameter</Text>;
   }
-  const [startGame, setStartGame] = useState(false);
   const [gameData, setGameData] = useState(null);
   const [myId, setMyId] = useState(null);
 
@@ -35,19 +34,15 @@ const GameStartButton = ({ code }) => {
 
   // Check if the current user's device ID matches the owner ID of the game
   const isOwner = gameData && myId === gameData.owner.id;
-  console.log("Id from Firebase: " + gameData?.owner?.id);
-  console.log({ isOwner });
-  console.log({ myId });
 
   const handleStartGame = async () => {
     updateDoc(doc(db, "games", code), {
       startGame: true,
-      settingPlayer: 1,
+      currentPlayer: 1,
     });
-    setStartGame(true);
   };
 
-  if (!isOwner || startGame) {
+  if (!isOwner) {
     return null;
   }
 
