@@ -42,14 +42,14 @@ const GameStartButton = ({ code }) => {
     });
   };
 
-  if (!isOwner) {
-    return null;
-  }
-
   return (
-    <View style={{ margin: 10 }}>
-      <Button title="Start the Game" onPress={handleStartGame} />
-    </View>
+    <>
+      {isOwner && (
+        <View style={{ margin: 10 }}>
+          <Button title="Start the Game" onPress={handleStartGame} />
+        </View>
+      )}
+    </>
   );
 };
 

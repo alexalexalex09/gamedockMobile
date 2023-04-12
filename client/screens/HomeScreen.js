@@ -29,7 +29,6 @@ const HomeScreen = () => {
       console.log("Please enter your name!");
       return;
     }
-    console.log(username);
     setLocalUsername(username);
     navigation.navigate("Join", { username: username });
   };
@@ -47,7 +46,6 @@ const HomeScreen = () => {
       owner: { id: uniqueId, username: username },
       startGame: false,
     });
-    console.log(username);
     setLocalUsername(username);
     navigation.navigate("Game", { code: code, username: username });
   };

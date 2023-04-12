@@ -12,7 +12,7 @@ const ColorPicker = ({ updateColor }) => {
         updateColor("#27ae60");
         break;
       case "blue":
-        updateColor("#2980b9");
+        updateColor("#27ae60");
         break;
       case "purple":
         updateColor("#B10DC9");
@@ -26,7 +26,7 @@ const ColorPicker = ({ updateColor }) => {
       case "pink":
         updateColor("#FFD1DC");
         break;
-      case "turquoise":
+      case "turquiose":
         updateColor("#7FDBFF");
         break;
       case "brown":
@@ -95,7 +95,7 @@ const ColorPicker = ({ updateColor }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.colorButton]}
-          onPress={() => changeColor("turqiose")}
+          onPress={() => changeColor("turquiose")}
         >
           <View style={[styles.colorBox, { backgroundColor: "#7FDBFF" }]} />
         </TouchableOpacity>

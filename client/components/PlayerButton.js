@@ -28,12 +28,22 @@ const PlayerButton = ({ code, maxPlayers }) => {
   const handlePlayer = () => {
     async function playerJoin() {
       const uniqueId = await getDeviceId();
+      const myTurnNum = currentPlayer;
       await updateDoc(doc(db, "games", code), {
-        [`users.${uniqueId}.playerNum`]: currentPlayer,
+        [`users.${uniqueId}.playerNum`]: myTurnNum,
         currentPlayer: currentPlayer + 1,
       });
-      setMyPlayerNum(currentPlayer);
-      navigation.navigate("Room", { code: code });
+      setMyPlayerNum(myTurnNum);
+      if (currentPlayer == maxPlayers) {
+        await updateDoc(doc(db, "games", code), {
+          currentPlayer: 1,
+        });
+      }
+      navigation.navigate("Room", {
+        code: code,
+        maxPlayers: maxPlayers,
+        myTurnNum: myTurnNum,
+      });
     }
     playerJoin();
   };

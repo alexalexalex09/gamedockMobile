@@ -4,11 +4,13 @@ import styles from "../utils/style";
 
 const TurnButton = ({ setTurn, direction }) => {
   const [turnFn, setTurnFn] = useState(null);
-  useEffect(() => {
-    setTurnFn(setTurn(direction));
-  }, [direction]);
+
+  const handleSetTurn = () => {
+    setTurn(direction);
+  };
+
   return (
-    <TouchableOpacity style={styles.button} onPress={() => {}}>
+    <TouchableOpacity style={styles.button} onPress={handleSetTurn}>
       <Text style={styles.buttonText}>{direction == -1 ? "Prev" : "Next"}</Text>
     </TouchableOpacity>
   );

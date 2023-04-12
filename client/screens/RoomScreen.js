@@ -8,14 +8,15 @@ import { getDeviceId } from "../utils/useSecureStore";
 import ColorPicker from "../components/ColorPicker";
 import HamburgerMenu from "../components/HamburgerMenu";
 import TurnButton from "../components/TurnButton";
+import YourTurn from "../components/YourTurn";
 
 const RoomScreen = ({ route }) => {
-  const { code } = route.params;
+  const { code, maxPlayers, myTurnNum } = route.params;
 
   const [backgroundColor, setBackgroundColor] = useState("#D2B48C");
   const [colorChosen, setColorChosen] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState(0);
-  const [myTurnNumber, setmyTurnNumber] = useState(0);
+  const [myTurn, setMyTurn] = useState(false);
 
   useEffect(() => {
     async function getDocInfo() {
@@ -25,11 +26,23 @@ const RoomScreen = ({ route }) => {
         if (doc.exists()) {
           setCurrentPlayer(doc.data().currentPlayer);
           const playerInfo = doc.data().users[`${uniqueId}`];
-          setmyTurnNumber(playerInfo.playerNum);
-          console.log("CP: " + currentPlayer);
+          console.log(
+            "CP: " +
+              currentPlayer +
+              " | " +
+              doc.data().currentPlayer +
+              ", " +
+              myTurnNum +
+              " | " +
+              playerInfo.playerNum
+          );
+          if (doc.data().currentPlayer == myTurnNum) {
+            setMyTurn(true);
+          } else {
+            setMyTurn(false);
+          }
         }
       });
-
       return unsubscribe;
     }
     getDocInfo();
@@ -49,10 +62,18 @@ const RoomScreen = ({ route }) => {
   };
 
   const handleSetTurn = (direction) => {
+    let newTurn = currentPlayer + direction;
+    if (newTurn > maxPlayers) {
+      newTurn = 1;
+    }
+    if (newTurn < 1) {
+      newTurn = maxPlayers;
+    }
+    console.log("Changing turn from " + currentPlayer + " to " + newTurn);
     updateDoc(doc(db, "games", code), {
-      currentPlayer: currentPlayer + direction,
+      currentPlayer: newTurn,
     });
-    setCurrentPlayer(currentPlayer + direction);
+    setCurrentPlayer(newTurn);
   };
 
   return (
@@ -67,15 +88,20 @@ const RoomScreen = ({ route }) => {
             menuSelect={handleMenuSelect}
             code={code}
           ></HamburgerMenu>
-          <View
-            style={[
-              styles.buttonRow,
-              { marginTop: 50, zIndex: 0, elevation: -1 },
-            ]}
-          >
-            <TurnButton setTurn={handleSetTurn} direction={-1}></TurnButton>
-            <TurnButton setTurn={handleSetTurn} direction={1}></TurnButton>
-          </View>
+          {myTurn && (
+            <View>
+              <View
+                style={[
+                  styles.buttonRow,
+                  { marginTop: 50, zIndex: 0, elevation: -1 },
+                ]}
+              >
+                <TurnButton setTurn={handleSetTurn} direction={-1}></TurnButton>
+                <TurnButton setTurn={handleSetTurn} direction={1}></TurnButton>
+              </View>
+              <YourTurn></YourTurn>
+            </View>
+          )}
         </View>
       )}
     </View>
