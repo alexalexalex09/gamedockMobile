@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import styles from "../utils/style";
 import { db } from "../utils/firebase";
 import { doc, setDoc, serverTimestamp } from "@firebase/firestore";
+import * as Brightness from "expo-brightness";
 import {
   getDeviceId,
   getLocalUsername,
@@ -13,6 +14,14 @@ import {
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [username, setUsername] = useState("");
+
+  //Request Brightness permission for later
+  useEffect(() => {
+    (async () => {
+      const { status } = await Brightness.requestPermissionsAsync();
+    })();
+  }, []);
+
   useEffect(() => {
     async function getName() {
       const localUsername = await getLocalUsername();

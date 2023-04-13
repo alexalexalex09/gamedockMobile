@@ -15,7 +15,9 @@ const HamburgerMenu = ({ code, menuSelect }) => {
   const navigation = useNavigation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const closeMenu = () => setIsMenuOpen(false);
 

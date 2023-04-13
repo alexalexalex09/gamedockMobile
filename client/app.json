@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "gamedockMobile",
+    "name": "yourTurn",
     "slug": "gamedockMobile",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,10 +21,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "WRITE_SETTINGS",
+        "WAKE_LOCK"
+      ],
+      "package": "com.alexscottbecker.gamedockMobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bc8bbec9-5784-4e8f-9de3-ab13a3019a61"
+      }
     }
   }
 }

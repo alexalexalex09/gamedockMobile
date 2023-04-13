@@ -15,7 +15,11 @@ const YourTurn = () => {
 
     animation.start();
 
-    return () => animation.stop();
+    return () => {
+      if (!animation.finished) {
+        animation.stop();
+      }
+    };
   }, [animationValue]);
 
   const animatedStyle = {
